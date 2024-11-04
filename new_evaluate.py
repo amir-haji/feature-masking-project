@@ -3,7 +3,7 @@ import os
 
 
 # waterbirds or celeba
-dataset = 'civilcomments'
+dataset = 'multinli'
 
 
 path = f'/home/f_hosseini/hajimohammadrezaei/pseudo-grad-unmasked-logs/{dataset}/not_free/'
@@ -51,6 +51,7 @@ final = sorted(total_res.items(), key=lambda x: x[1]['test']['worst'], reverse=T
 
 for k, v in final:
   print(k, ' ', v)
+  break
 
 
           

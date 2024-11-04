@@ -353,19 +353,19 @@ if __name__ == '__main__':
                 valloaders = get_random_valloaders(model, args, valloader)
 
         else:
-            valloaders = [valloader]
+            # valloaders = [valloader]
             
-            '''
-            d = selected_feats.shape[0]
-            print ('feature size: ', d)
-            model = utils.get_fc(device, args.pretrained_path, num_features = d, num_classes=2, load_pretrained = False)
-            avg_acc, worst_acc, miscls_envs, corrcls_envs = test_cnn(valloader, model, return_samples=True)
+            
+            n = data.dataset_specs.datasets[args.dataset]['num_classes']
+            d = data.dataset_specs.datasets[args.dataset]['hidden_layer_size']
+            model_f = utils.get_fc(device, args.pretrained_path, num_features = d, num_classes=n)
+            avg_acc, worst_acc, miscls_envs, corrcls_envs = test_cnn(valloader, model_f, return_samples=True)
             balanced_valloader = experiment.create_misc_dataloader(miscls_envs, corrcls_envs,
                                                                            sample_size=args.sample_size,
-                                                                           model=model, batch_size=args.batch_size,
-                                                                           dataloader=valloader, dataset=args.dataset, balanced =False)
+                                                                           model=model_f, batch_size=args.batch_size,
+                                                                           dataloader=valloader, dataset=args.dataset, dst=args.dataset, balanced =False)
             valloaders = [balanced_valloader]
-            '''
+            
             
         if args.experiment != 'ERM':
             if args.fine_tune:
@@ -383,7 +383,7 @@ if __name__ == '__main__':
             result = run.run_last_layer_experiment(model, device, balanced_loader, valloaders,
                                                    args.experiment,
                                                    optimizer, args.l1, scheduler, dataset=args.dataset,
-                                                   epochs=args.epochs, seed=args.seed, args=args)
+                                                   epochs=args.epochs, seed=args.seed, inferred_groups = True, args=args)
         else:
             result = run.run_last_layer_experiment(model, device, trainloader, valloader,
                                                        args.experiment,

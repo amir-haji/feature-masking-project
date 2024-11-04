@@ -8,12 +8,12 @@ import wandb
 import numpy as np
 
 
-def multi_eval(model, testloaders, log, args):
+def multi_eval(model, testloaders, log, inferred_groups, args):
     avg_accs = []
     worst_accs = []
     for i, testloader in enumerate(testloaders):
         print (f'Set{i}:')
-        acc, worst_acc = test_cnn(testloader, model, log=log, args=args, inferred_groups = args.for_free)
+        acc, worst_acc = test_cnn(testloader, model, log=log, args=args, inferred_groups = inferred_groups)
         avg_accs.append(acc)
         worst_accs.append(worst_acc)
 
@@ -24,7 +24,7 @@ def multi_eval(model, testloaders, log, args):
 
 def run_last_layer_experiment(model, device, balanced_dataloader, testloaders, exp_name,
                               optimizer, l1_lambda, scheduler, dataset='waterbirds',
-                              epochs=30, log=False, inspect_loader=None, seed=1, args=None):
+                              epochs=30, log=False, inspect_loader=None, seed=1, inferred_groups=False, args=None):
     curr_worst = 0
     curr_avg = 0
     if log:
@@ -57,7 +57,7 @@ def run_last_layer_experiment(model, device, balanced_dataloader, testloaders, e
             global_step = train_cnn(balanced_dataloader, model, cnn_optimizer, cnn_scheduler, global_step, device, l1_lambda, log)
             print('----> [Val/Test]')
             with torch.no_grad():
-                inv_acc, worst_acc = multi_eval(model, testloaders, log, args)
+                inv_acc, worst_acc = multi_eval(model, testloaders, log, inferred_groups, args)
             if inv_acc > curr_avg:
                 curr_avg = inv_acc
                 if best_model:

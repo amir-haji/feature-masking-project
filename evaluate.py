@@ -3,7 +3,7 @@ import os
 
 is_real =  False
 # waterbirds or celeba
-dataset = 'civilcomments'
+dataset = 'multinli'
 
 if is_real:
   path = f'/home/f_hosseini/hajimohammadrezaei/real-grad-masked-lfr-logs/{dataset}/not_free/'
@@ -13,7 +13,7 @@ else:
 total_res = {}
 
 
-for alpha in ['1.0', '1.5', '2.0', '2.6']:
+for alpha in ['1.0', '1.5', '2.0']:
   for sample in range(8):
     if sample == 0:
       s = ''

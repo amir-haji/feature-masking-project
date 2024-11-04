@@ -12,7 +12,7 @@ from exps import LossBasedExp
 
 # /home/f_hosseini/data/multinli/multinli_features/features_noaug_seed1
 
-trainloader, lastlayerloader, valloader, testloader = data.get_feature_loaders(f"/home/f_hosseini/data/haji/multinli/grad_misc_masked/features_seed3/alpha3.2/", 128)
+trainloader, lastlayerloader, valloader, testloader = data.get_feature_loaders(f"/home/f_hosseini/data/urbancars/noaug_features_seed0/", 128)
 
 cls_env_dict = {i: [] for i in range(3)}
 env_cnt = {i: 0 for i in range(8)}
